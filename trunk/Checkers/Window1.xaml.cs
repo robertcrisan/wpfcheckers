@@ -95,6 +95,7 @@ namespace Checkers
                     opponentPiece = grdBoard.Children.OfType<RedChecker>().Where(p => p.row == currentPiece.row - 1 && (p.col == currentPiece.col - 1)).SingleOrDefault();
                 }
 
+                //FIXME: capturing a piece to the left isn't working
                 if (opponentPiece != null && currentPiece.row -l.row == 2)
                 {
                     int validCol = (opponentPiece.col > currentPiece.col) ? currentPiece.col + 2 : currentPiece.col - 2;
