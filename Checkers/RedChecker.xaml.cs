@@ -22,5 +22,13 @@ namespace Checkers
 		{
 			this.InitializeComponent();
 		}
+
+        private void CheckerPiece_OnCaptured()
+        {
+
+        }
+
+
+        
 	}
 }

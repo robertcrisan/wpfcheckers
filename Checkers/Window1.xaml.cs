@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Collections;
 using System.Data;
 using System.Resources;
+using System.Windows.Media.Animation;
 
 namespace Checkers
 {
@@ -22,17 +23,29 @@ namespace Checkers
 	/// </summary>
 	public partial class Window1 : Window
 	{
+        private enum Turn
+        {
+            Red,
+            Black
+        }
+
+        #region Globals
+        
         private bool IsDragging;
-        Point _startPoint;
-        Point _endPoint;
-        CheckerPiece currentPiece;
+        private Point _startPoint;
+        private Point _endPoint;
+        private CheckerPiece currentPiece;
+        private CheckerPiece capturedPiece; // this is messy, but I can't think of a better way to pass the captured piece to the Completed event handler.
+        private Turn currentTurn;
+
+        #endregion
 
         void Window1_Loaded(object sender, RoutedEventArgs e)
         {
             this.grdBoard.Drop += new DragEventHandler(grdBoard_Drop);
-            this.grdBoard.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(grdBoard_PreviewMouseLeftButtonUp);
+            this.grdBoard.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(grdBoard_PreviewMouseLeftButtonUp);            
         }
-
+        
         /// <summary>
         /// Here, the source is the drop target which in this case is a Label. This is needed to get
         /// a reference to the underlying grid cell. That way we know the cell to which to add the new 
@@ -54,13 +67,20 @@ namespace Checkers
             CheckerPiece checker;
             if (currentPiece is RedChecker)
             {
+                if (currentTurn != Turn.Red)
+                {
+                    System.Windows.Forms.MessageBox.Show("It's not your turn");
+                    return; // it's not your turn.
+                }
+
+                // It's red's turn...
                 checker = new RedChecker();
                 if (l.row == currentPiece.row + 1 && (l.col == currentPiece.col+1 || l.col==currentPiece.col-1))
                     okToMove = true;
                 
                 //now check to see if we captured anything
                 BlackChecker opponentPiece ;
-                if (c == currentPiece.col + 1)
+                if (c == currentPiece.col + 2)
                 {
                     opponentPiece = grdBoard.Children.OfType<BlackChecker>().Where(p => p.row == currentPiece.row + 1 && (p.col == currentPiece.col + 1)).SingleOrDefault();
                 }
@@ -74,23 +94,42 @@ namespace Checkers
                     int validCol = (opponentPiece.col > currentPiece.col) ? currentPiece.col + 2 : currentPiece.col - 2;
                     if (r == currentPiece.row + 2 && c == validCol)
                     {
-                        opponentPiece.Visibility = Visibility.Hidden;
+                        Storyboard PieceCaptured = opponentPiece.Resources["PieceCaptured"] as Storyboard;
+                        capturedPiece = opponentPiece;
+
+                        if (PieceCaptured != null)
+                        {
+                            PieceCaptured.Completed += new EventHandler(RemovePiece);
+                            PieceCaptured.Begin();
+                        }
+                        
                         okToMove = true;
                     }
+                }
+                if (okToMove)
+                {                    
+                    currentTurn = Turn.Black;
                 }
             }
             else
             {
+                if (currentTurn != Turn.Black)
+                {
+                    System.Windows.Forms.MessageBox.Show("It's not your turn");
+                    return; // it's not your turn.
+                }
+
+                // It's black's turn...
                 checker = new BlackChecker();
                 if (l.row == currentPiece.row - 1 && (l.col == currentPiece.col + 1 || l.col == currentPiece.col - 1))
                     okToMove = true;
 
-                RedChecker opponentPiece;
-                if (c == currentPiece.col + 1)
+                RedChecker opponentPiece = null;
+                if (c == currentPiece.col + 2)
                 {
                     opponentPiece = grdBoard.Children.OfType<RedChecker>().Where(p => p.row == currentPiece.row - 1 && (p.col == currentPiece.col + 1)).SingleOrDefault();
                 }
-                else
+                else if (c== currentPiece.col - 2)
                 {
                     opponentPiece = grdBoard.Children.OfType<RedChecker>().Where(p => p.row == currentPiece.row - 1 && (p.col == currentPiece.col - 1)).SingleOrDefault();
                 }
@@ -101,10 +140,18 @@ namespace Checkers
                     int validCol = (opponentPiece.col > currentPiece.col) ? currentPiece.col + 2 : currentPiece.col - 2;
                     if (r == currentPiece.row - 2 && c == validCol)
                     {
-                        opponentPiece.Visibility = Visibility.Hidden;
+                        capturedPiece = opponentPiece;
+                        Storyboard PieceCaptured = opponentPiece.Resources["PieceCaptured"] as Storyboard;
+                        if (PieceCaptured != null)
+                        {
+                            PieceCaptured.Completed += new EventHandler(RemovePiece);
+                            PieceCaptured.Begin();
+                        }
                         okToMove = true;
                     }
                 }
+                if (okToMove)
+                    currentTurn = Turn.Red;
             }
 
             if (okToMove)
@@ -123,6 +170,36 @@ namespace Checkers
                 Grid.SetColumn(checker, c);
                 this.grdBoard.Children.Remove(currentPiece);
                 grdBoard.Children.Add(checker);
+                Storyboard DropPiece = checker.Resources["DropPiece"] as Storyboard;
+                if (DropPiece != null)
+                {
+                    DropPiece.Begin();
+                }
+                
+            }
+        }
+
+        void RemovePiece(object sender, EventArgs e)
+        {
+            if (capturedPiece != null)
+            {
+                capturedPiece.Visibility = Visibility.Hidden;
+
+                if (capturedPiece is RedChecker)
+                {
+                    RedChecker deadman = new RedChecker();
+                    Storyboard AddToGraveyard = deadman.Resources["AddToGraveyard"] as Storyboard;
+                    this.pnlBlackGraveyard.Children.Add(deadman);
+                    AddToGraveyard.Begin();
+                }
+                else
+                {
+                    BlackChecker deadman = new BlackChecker();
+                    Storyboard AddToGraveyard = deadman.Resources["AddToGraveyard"] as Storyboard;
+                    this.pnlRedGraveyard.Children.Add(deadman);
+                    AddToGraveyard.Begin();
+                }
+                grdBoard.Children.Remove(capturedPiece);
             }
         }
 
@@ -138,12 +215,29 @@ namespace Checkers
         /// </summary>
         private void ResetGame()
         {
+            currentTurn = Turn.Red; // Red goes first.
+            this.pnlBlackGraveyard.Children.Clear();
+            this.pnlRedGraveyard.Children.Clear();
+
             int col = 0;
+            for (int row = 0; row < grdBoard.RowDefinitions.Count; row++)
+            {
+                for (col = 0; col < grdBoard.ColumnDefinitions.Count; col ++)
+                {
+                    Border b = new Border();
+                    b.BorderThickness = new Thickness(1, 1, 1, 1);
+                    b.BorderBrush = Brushes.Black;
+                    Grid.SetColumn(b, col);
+                    Grid.SetRow(b, row);
+                    this.grdBoard.Children.Add(b);
+                }
+            }
+
             for (int row = 0; row < grdBoard.RowDefinitions.Count; row++)
             {
                 // put a piece in every other cell
                 for (col = (col % 2 != 0 ? 0 : 1); col < grdBoard.ColumnDefinitions.Count; col += 2)
-                {
+                {                    
                     EmptySpace l = new EmptySpace();
                     l.Margin = new Thickness(0, 0, 0, 0);
                     l.AllowDrop = true;
@@ -226,6 +320,12 @@ namespace Checkers
                     StartDrag(e);
                 }
             }
+        }
+
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+            this.grdBoard.Children.Clear();
+            this.ResetGame();
         }
     }
 }

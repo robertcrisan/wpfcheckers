@@ -4,10 +4,13 @@
 	x:Class="Checkers.Window1"
 	x:Name="Window"
 	Title="WPF Checkers"
-	Width="680" Height="812" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+	Width="798" Height="812" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 
 	<Grid x:Name="LayoutRoot" Width="652" Height="670">
-	    <Grid AllowDrop="True" x:Name="grdBoard" HorizontalAlignment="Stretch" Grid.Row="0" RenderTransformOrigin="0.5,0.5" Margin="8,8,0,8" >
+	    
+		<DockPanel Margin="-64,-48,-60,0" VerticalAlignment="Top" Height="60" LastChildFill="False" x:Name="pnlRedGraveyard"/>
+		
+		<Grid AllowDrop="True" x:Name="grdBoard" HorizontalAlignment="Stretch" Grid.Row="0" RenderTransformOrigin="0.5,0.5" Margin="8,8,0,8" >
 		<Grid.RenderTransform>
 			<TransformGroup>
 				<ScaleTransform ScaleX="1" ScaleY="1"/>
@@ -36,76 +39,10 @@
 			<ColumnDefinition Width="0.126*"/>
 			<ColumnDefinition Width="0.126*"/>
 		</Grid.ColumnDefinitions>
-            <Border Grid.Column="0" Grid.Row="0" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="1" Grid.Row="0" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="2" Grid.Row="0" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="3" Grid.Row="0" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="4" Grid.Row="0" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="5" Grid.Row="0" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="6" Grid.Row="0" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="7" Grid.Row="0" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="0" Grid.Row="1" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="1" Grid.Row="1" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="2" Grid.Row="1" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="3" Grid.Row="1" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="4" Grid.Row="1" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="5" Grid.Row="1" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="6" Grid.Row="1" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="7" Grid.Row="1" BorderBrush="Black" BorderThickness="1"></Border>
             
-            <Border Grid.Column="0" Grid.Row="2" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="1" Grid.Row="2" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="2" Grid.Row="2" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="3" Grid.Row="2" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="4" Grid.Row="2" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="5" Grid.Row="2" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="6" Grid.Row="2" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="7" Grid.Row="2" BorderBrush="Black" BorderThickness="1"></Border>
-            
-            <Border Grid.Column="0" Grid.Row="3" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="1" Grid.Row="3" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="2" Grid.Row="3" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="3" Grid.Row="3" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="4" Grid.Row="3" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="5" Grid.Row="3" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="6" Grid.Row="3" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="7" Grid.Row="3" BorderBrush="Black" BorderThickness="1"></Border>
-            
-            <Border Grid.Column="0" Grid.Row="4" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="1" Grid.Row="4" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="2" Grid.Row="4" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="3" Grid.Row="4" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="4" Grid.Row="4" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="5" Grid.Row="4" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="6" Grid.Row="4" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="7" Grid.Row="4" BorderBrush="Black" BorderThickness="1"></Border>
-            
-            <Border Grid.Column="0" Grid.Row="5" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="1" Grid.Row="5" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="2" Grid.Row="5" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="3" Grid.Row="5" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="4" Grid.Row="5" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="5" Grid.Row="5" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="6" Grid.Row="5" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="7" Grid.Row="5" BorderBrush="Black" BorderThickness="1"></Border>
-            
-            <Border Grid.Column="0" Grid.Row="6" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="1" Grid.Row="6" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="2" Grid.Row="6" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="3" Grid.Row="6" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="4" Grid.Row="6" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="5" Grid.Row="6" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="6" Grid.Row="6" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="7" Grid.Row="6" BorderBrush="Black" BorderThickness="1"></Border>
-            
-            <Border Grid.Column="0" Grid.Row="7" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="1" Grid.Row="7" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="2" Grid.Row="7" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="3" Grid.Row="7" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="4" Grid.Row="7" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="5" Grid.Row="7" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="6" Grid.Row="7" BorderBrush="Black" BorderThickness="1"></Border>
-            <Border Grid.Column="7" Grid.Row="7" BorderBrush="Black" BorderThickness="1"></Border>
         </Grid>
+	    <DockPanel Margin="-64,0,-60,-50" VerticalAlignment="Bottom" Height="60" LastChildFill="False" x:Name="pnlBlackGraveyard" HorizontalAlignment="Stretch"/>
+	    <Button HorizontalAlignment="Right" Margin="0,0,-64.5,8" VerticalAlignment="Bottom" Width="60" Height="40" Content="New Game" x:Name="btnReset" Click="btnReset_Click"/>
+	    
 	</Grid>
 </Window>
