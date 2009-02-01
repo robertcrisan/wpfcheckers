@@ -13,8 +13,14 @@ using System.Windows.Shapes;
 
 namespace Checkers
 {
+    public delegate void Captured();
+
     public abstract class CheckerPiece : UserControl
     {
+
+        public event Captured OnCaptured;
+
+        
         public int col { get; set; }
         public int row { get; set; }
     }
