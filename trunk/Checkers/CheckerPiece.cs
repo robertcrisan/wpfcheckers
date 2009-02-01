@@ -10,12 +10,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 
 namespace Checkers
 {
     public delegate void Captured();
 
-    public abstract class CheckerPiece : UserControl
+    public class CheckerPiece : UserControl
     {
 
         public event Captured OnCaptured;
@@ -23,5 +24,14 @@ namespace Checkers
         
         public int col { get; set; }
         public int row { get; set; }
+        public CheckerPiece()
+        {
+            this.OnCaptured += new Captured(CheckerPiece_OnCaptured);
+        }
+
+        void CheckerPiece_OnCaptured()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
