@@ -47,7 +47,7 @@ namespace Checkers
             int r = Grid.GetRow((EmptySpace)e.Source);
             int c = Grid.GetColumn((EmptySpace)e.Source);
             bool okToMove = false;
-
+            
             // Because both RedChecker and BlackChecker derive from CheckerPiece, we can use polymorphism
             // to create the correct piece. Get the correct piece and determine if the move is valid.
             // A valid move is one row forward to an unoccupied space.
